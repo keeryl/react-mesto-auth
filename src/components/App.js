@@ -14,7 +14,6 @@ import { Route, Switch } from 'react-router-dom';
 import Login from './Login/Login.js';
 import Register from './Register/Register.js';
 import ProtectedRoute from './ProtectedRoute/ProtectedRoute.js';
-import InfoTooltip from './InfoTooltip/InfoTooltip.js';
 
 
 function App() {
