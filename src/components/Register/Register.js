@@ -1,12 +1,14 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import auth from '../../utils/Auth.js';
-import InfoTooltip from './InfoTooltip/InfoTooltip.js';
+import InfoTooltip from '../InfoTooltip/InfoTooltip.js';
 
 function Register (props) {
 
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [isRegistrationSuccessful, setRegistrationState] = React.useState(false);
+  const [isInfoTooltipPopupOpened, setTooltipPopupState] = React.useState(false);
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -16,19 +18,38 @@ function Register (props) {
     setPassword(e.target.value);
   }
 
-  handleSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(`Register Submit clicked, email: ${email}, password: ${password}`);
     auth.register(password, email)
       .then(res => {
+        console.log(res);
         if(res) {
-          console.log(res);
+          setRegistrationState(true);
           localStorage.setItem('user', JSON.stringify({
             email: res.data.email,
             id: res.data._id
           }));
-          props.history.push('/');
+          setTooltipPopupState(true);
+          setPassword('');
+          setEmail('');
         }
       })
+      .catch(err => {
+        setTooltipPopupState(true);
+        setRegistrationState(false);
+      })
+  }
+
+  const closeInfoTooltipPopup = () => {
+    if (isRegistrationSuccessful) {
+      setTooltipPopupState(false);
+      setRegistrationState(null);
+      props.history.push('/sign-in');
+    } else {
+      setTooltipPopupState(false);
+      setRegistrationState(null);
+    }
   }
 
   return(
@@ -64,14 +85,16 @@ function Register (props) {
           <Link
             className="auth-form__link"
             to="/sign-in"
-          >
-            Войти
+          > Войти
           </Link>
         </p>
       </form>
-      <InfoTooltip />
+      <InfoTooltip
+        isOpened={isInfoTooltipPopupOpened}
+        onClose={closeInfoTooltipPopup}
+        isRegistrationSuccessful={isRegistrationSuccessful}
+      />
     </>
-
   )
 }
 

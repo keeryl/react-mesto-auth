@@ -1,5 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
+import auth from '../../utils/Auth';
 
 function Login (props) {
 
@@ -14,16 +15,27 @@ function Login (props) {
     setPassword(e.target.value);
   }
 
-  handleSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    props.onLogin();
-    setEmail('');
-    setPassword('');
+    auth.authorize(password, email)
+      .then(res => {
+        if(res) {
+          console.log(res);
+          localStorage.setItem('token', res.token);
+          console.log(localStorage);
+          props.history.push('/');
+          props.onLogin();
+          setEmail('');
+          setPassword('');
+        }
+      })
+      .catch(err => console.log(err));
+
   }
 
   return(
     <form className="auth-form" onSubmit={handleSubmit}>
-      <h2 className="auth-form__header">Войти</h2>
+      <h2 className="auth-form__header">Вход</h2>
       <fieldset className="auth-form__inputs">
         <input
           type="email"

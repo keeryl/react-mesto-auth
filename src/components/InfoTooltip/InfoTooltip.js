@@ -1,12 +1,28 @@
 import React from 'react';
+import successImage from '../../blocks/popup/images/successImage.svg';
+import failImage from '../../blocks/popup/images/failImage.svg';
 
 function InfoTooltip (props) {
 
   return(
-    <div className={`popup ${props.isOpened ? "popup_opened" : ""}`}>
-      <img className="popup__auth-img" src={props.image} alt={props.message}></img>
-      <p className="popup__auth-message"> {props.message} </p>
+    <div className={`popup popup_type_edit-profile ${props.isOpened ? "popup_opened" : ""}`}>
+      <div className="popup__auth-container">
+      <img
+        className="popup__auth-img"
+        src={props.isRegistrationSuccessful
+          ? successImage
+          : failImage}
+        alt={props.isRegistrationSuccessful
+          ? "Вы успешно зарегистрировались"
+          : "Что-то пошло не так! Попробуйте еще раз."}>
+      </img>
+      <p className="popup__auth-message">
+        {props.isRegistrationSuccessful
+          ? "Вы успешно зарегистрировались"
+          : "Что-то пошло не так! Попробуйте еще раз."}
+      </p>
       <button onClick={props.onClose} className="popup__close-btn" type="button"></button>
+      </div>
     </div>
   )
 

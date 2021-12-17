@@ -2,7 +2,6 @@ import React from 'react';
 import '../index.css';
 import Header from './Header/Header.js';
 import Main from './Main/Main.js';
-import Footer from './Footer/Footer.js';
 import ImagePopup from './ImagePopup/ImagePopup.js';
 import CurrentUserContext from '../contexts/CurrentUserContext.js';
 import api from '../utils/Api.js';
@@ -163,7 +162,6 @@ function App() {
     <div className="page">
       <CurrentUserContext.Provider value={currentUser}>
         <Header/>
-        <Switch>
           <ProtectedRoute
             component={Main}
             loggedIn={loggedIn}
@@ -175,20 +173,16 @@ function App() {
             onCardLike={handleCardLike}
             onCardDeleteClick={handleCardDeleteButton}
           />
-          <Route path="/sign-up">
+          <Route exact path="/sign-up">
             <Register
               onLogin={handleLogin}
             />
           </Route>
-          <Route path="/sign-in">
+          <Route exact path="/sign-in">
             <Login
               onLogin={handleLogin}
             />
           </Route>
-        </Switch>
-        <Footer/>
-
-        <InfoTooltip/>
         <EditProfilePopup
           isOpen={isEditProfilePopupOpen}
           onClose={closeAllPopups}

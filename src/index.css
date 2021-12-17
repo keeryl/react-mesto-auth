@@ -62,6 +62,9 @@
 @import url(./blocks/popup/_type/popup_type_add-card.css);
 @import url(./blocks/popup/_type/popup_type_edit-profile.css);
 @import url(./blocks/popup/_type/popup_type_view-card.css);
+@import url(./blocks/popup/__auth-container/popup__auth-container.css);
+@import url(./blocks/popup/__auth-img/popup__auth-img.css);
+@import url(./blocks/popup/__auth-message/popup__auth-message.css);
 
 /* cards */
 
@@ -89,3 +92,14 @@
 /* semantic-wrapper */
 
 @import url(./blocks/semantic-wrapper/semantic-wrapper.css);
+
+/* auth-form */
+
+@import url(./blocks/auth-form/auth-form.css);
+@import url(./blocks/auth-form/__header/auth-form__header.css);
+@import url(./blocks/auth-form/__inputs/auth-form__inputs.css);
+@import url(./blocks/auth-form/__input/auth-form__input.css);
+@import url(./blocks/auth-form/__submit-btn/auth-form__submit-btn.css);
+@import url(./blocks/auth-form/__text/auth-form__text.css);
+@import url(./blocks/auth-form/__link/auth-form__link.css);
+
