@@ -9,17 +9,17 @@ import EditProfilePopup from './EditProfilePopup/EditProfilePopup.js';
 import EditAvatarPopup from './EditAvatarPopup/EditAvatarPopup.js';
 import AddPlacePopup from './AddPlacePopup/AddPlacePopup.js';
 import DeleteCardPopup from './DeleteCardPopup/DeleteCardPopup.js';
-import { Route, Switch } from 'react-router-dom';
+import { Route, withRouter, Switch } from 'react-router-dom';
 import Login from './Login/Login.js';
 import Register from './Register/Register.js';
 import ProtectedRoute from './ProtectedRoute/ProtectedRoute.js';
+import auth from '../utils/Auth';
 
 
 function App() {
 
   const [currentUser, setCurrentUser] = React.useState({});
   const [isEditProfilePopupOpen, setIsEditProfilePopup] = React.useState(false);
-  const [isTooltipPopupOpened, setIsTooltipPopup] = React.useState(false)
   const [isAddPlacePopupOpen, setIsAddPlacePopup] = React.useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopup] = React.useState(false);
   const [isDeleteCardPopupOpen, setIsDeleteCardPopup] = React.useState(false);
@@ -47,6 +47,26 @@ function App() {
           console.log(error);
         });
     }, []);
+
+  React.useEffect(() => {
+    tokenCheck();
+  }, []);
+
+  const tokenCheck = () => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      auth.getContent(token)
+        .then(res => {
+          if (res) {
+            setLoggedIn(true);
+            this.history.push('/');
+          }
+        })
+        .catch(err => {
+
+        });
+    }
+  }
 
   const handleCardLike = (card) => {
     const isLiked = card.likes.some(like => like._id === currentUser._id);
@@ -158,11 +178,17 @@ function App() {
     setLoggedIn(true);
   }
 
+  function handleLogout () {
+    setLoggedIn(false);
+  }
+
   return (
     <div className="page">
       <CurrentUserContext.Provider value={currentUser}>
-        <Header/>
+        <Header loggedIn={loggedIn} onLogout={handleLogout}/>
+        <Switch>
           <ProtectedRoute
+            exact path="/"
             component={Main}
             loggedIn={loggedIn}
             onEditProfile={handleEditProfileClick}
@@ -183,6 +209,7 @@ function App() {
               onLogin={handleLogin}
             />
           </Route>
+        </Switch>
         <EditProfilePopup
           isOpen={isEditProfilePopupOpen}
           onClose={closeAllPopups}
@@ -214,4 +241,4 @@ function App() {
   );
 }
 
-export default App;
+export default withRouter(App);

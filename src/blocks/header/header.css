@@ -3,7 +3,7 @@
   max-width: 880px;
   min-height: 84px; /* В чем преимущество управления высотой через паддинги? */
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #545454;
 }

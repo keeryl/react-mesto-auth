@@ -5,7 +5,7 @@ import Footer from '../Footer/Footer.js';
 
 function ProtectedRoute ({component: Component, ...props}) {
   return(
-    <Route exact path={"/"}>
+    <Route>
       {() =>
         props.loggedIn ? <><Component {...props} /> <Footer/></> : <Redirect to={"/sign-up"} />
       }

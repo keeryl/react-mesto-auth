@@ -7,6 +7,13 @@ function Login (props) {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
 
+  React.useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (localStorage.getItem('user')) {
+      setEmail(user.email);
+    }
+  }, []);
+
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
   }
@@ -23,8 +30,8 @@ function Login (props) {
           console.log(res);
           localStorage.setItem('token', res.token);
           console.log(localStorage);
-          props.history.push('/');
           props.onLogin();
+          props.history.push('/');
           setEmail('');
           setPassword('');
         }
