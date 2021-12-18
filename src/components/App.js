@@ -192,23 +192,25 @@ function App() {
 
   function handleRegistrationSubmit (userEmail) {
     setRegistrationState(true);
-    setTooltipPopupState(true);
     setEmail(userEmail);
+    setTimeout(setTooltipPopupState, 1 * 300, true);
+    // setTooltipPopupState(true);
   }
 
   function handleRegistrationError () {
     setRegistrationState(false);
-    setTooltipPopupState(true);
+    setTimeout(setTooltipPopupState, 1 * 300, true);
+    // setTooltipPopupState(true);
   }
 
   const closeInfoTooltipPopup = () => {
     if (isRegistrationSuccessful) {
       setTooltipPopupState(false);
-      setRegistrationState(null);
+      setRegistrationState(false);
       history.push('/sign-in');
     } else {
       setTooltipPopupState(false);
-      setRegistrationState(null);
+      setRegistrationState(false);
     }
   }
 

@@ -24,9 +24,9 @@ function Register (props) {
             email: res.data.email,
             id: res.data._id
           }));
+          props.onRegistrationSubmit(res.data.email);
           setPassword('');
           setEmail('');
-          props.onRegistrationSubmit(res.data.email);
         }
       })
       .catch(err => {
