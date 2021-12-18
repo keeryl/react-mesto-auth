@@ -9,7 +9,7 @@ import EditProfilePopup from './EditProfilePopup/EditProfilePopup.js';
 import EditAvatarPopup from './EditAvatarPopup/EditAvatarPopup.js';
 import AddPlacePopup from './AddPlacePopup/AddPlacePopup.js';
 import DeleteCardPopup from './DeleteCardPopup/DeleteCardPopup.js';
-import { Route, withRouter, Switch } from 'react-router-dom';
+import { Route, withRouter, Switch, useHistory } from 'react-router-dom';
 import Login from './Login/Login.js';
 import Register from './Register/Register.js';
 import ProtectedRoute from './ProtectedRoute/ProtectedRoute.js';
@@ -27,6 +27,7 @@ function App() {
   const [selectedCard, setSelectedCard] = React.useState({});
   const [cards, setCards] = React.useState([]);
   const [loggedIn, setLoggedIn] = React.useState(false);
+  const history = useHistory();
 
   React.useEffect(() => {
       api.getInitialCards()
@@ -50,7 +51,7 @@ function App() {
 
   React.useEffect(() => {
     tokenCheck();
-  }, []);
+  });
 
   const tokenCheck = () => {
     const token = localStorage.getItem('token');
@@ -59,7 +60,7 @@ function App() {
         .then(res => {
           if (res) {
             setLoggedIn(true);
-            this.history.push('/');
+            history.push('/');
           }
         })
         .catch(err => {

@@ -10,8 +10,6 @@ function Header (props) {
   const path = `${location.pathname === "/sign-up"? "/sign-in" : "/sign-up"}`
   const user = JSON.parse(localStorage.getItem('user'))
 
-  console.log(location);
-
   const signOut = () => {
     localStorage.removeItem('token');
     props.onLogout();
