@@ -14,6 +14,7 @@ import Login from './Login/Login.js';
 import Register from './Register/Register.js';
 import ProtectedRoute from './ProtectedRoute/ProtectedRoute.js';
 import auth from '../utils/Auth';
+import InfoTooltip from './InfoTooltip/InfoTooltip.js';
 
 
 function App() {
@@ -25,6 +26,8 @@ function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopup] = React.useState(false);
   const [isDeleteCardPopupOpen, setIsDeleteCardPopup] = React.useState(false);
   const [isImagePopupOpen, setIsImagePopupOpen] = React.useState(false);
+  const [isRegistrationSuccessful, setRegistrationState] = React.useState(false);
+  const [isInfoTooltipPopupOpened, setTooltipPopupState] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState({});
   const [cards, setCards] = React.useState([]);
   const [loggedIn, setLoggedIn] = React.useState(false);
@@ -187,8 +190,26 @@ function App() {
     setEmail('');
   }
 
-  function handleRegistration (userEmail) {
+  function handleRegistrationSubmit (userEmail) {
+    setRegistrationState(true);
+    setTooltipPopupState(true);
     setEmail(userEmail);
+  }
+
+  function handleRegistrationError () {
+    setRegistrationState(false);
+    setTooltipPopupState(true);
+  }
+
+  const closeInfoTooltipPopup = () => {
+    if (isRegistrationSuccessful) {
+      setTooltipPopupState(false);
+      setRegistrationState(null);
+      history.push('/sign-in');
+    } else {
+      setTooltipPopupState(false);
+      setRegistrationState(null);
+    }
   }
 
   return (
@@ -210,7 +231,8 @@ function App() {
           />
           <Route exact path="/sign-up">
             <Register
-              onRegistration={handleRegistration}
+              onRegistrationSubmit={handleRegistrationSubmit}
+              onRegistrationError={handleRegistrationError}
             />
           </Route>
           <Route exact path="/sign-in">
@@ -219,6 +241,11 @@ function App() {
             />
           </Route>
         </Switch>
+        <InfoTooltip
+          isOpened={isInfoTooltipPopupOpened}
+          onClose={closeInfoTooltipPopup}
+          isRegistrationSuccessful={isRegistrationSuccessful}
+      />
         <EditProfilePopup
           isOpen={isEditProfilePopupOpen}
           onClose={closeAllPopups}

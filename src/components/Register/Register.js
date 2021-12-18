@@ -1,14 +1,11 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import auth from '../../utils/Auth.js';
-import InfoTooltip from '../InfoTooltip/InfoTooltip.js';
 
 function Register (props) {
 
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
-  const [isRegistrationSuccessful, setRegistrationState] = React.useState(false);
-  const [isInfoTooltipPopupOpened, setTooltipPopupState] = React.useState(false);
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -23,33 +20,19 @@ function Register (props) {
     auth.register(password, email)
       .then(res => {
         if(res) {
-          setRegistrationState(true);
           localStorage.setItem('user', JSON.stringify({
             email: res.data.email,
             id: res.data._id
           }));
-          setTooltipPopupState(true);
           setPassword('');
           setEmail('');
-          props.onRegistration(res.data.email);
+          props.onRegistrationSubmit(res.data.email);
         }
       })
       .catch(err => {
-        setTooltipPopupState(true);
-        setRegistrationState(false);
+        props.onRegistrationError();
         console.log(err);
       })
-  }
-
-  const closeInfoTooltipPopup = () => {
-    if (isRegistrationSuccessful) {
-      setTooltipPopupState(false);
-      setRegistrationState(null);
-      props.history.push('/sign-in');
-    } else {
-      setTooltipPopupState(false);
-      setRegistrationState(null);
-    }
   }
 
   return(
@@ -89,11 +72,6 @@ function Register (props) {
           </Link>
         </p>
       </form>
-      <InfoTooltip
-        isOpened={isInfoTooltipPopupOpened}
-        onClose={closeInfoTooltipPopup}
-        isRegistrationSuccessful={isRegistrationSuccessful}
-      />
     </>
   )
 }

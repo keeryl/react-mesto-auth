@@ -4,6 +4,10 @@ import failImage from '../../blocks/popup/images/failImage.svg';
 
 function InfoTooltip (props) {
 
+  const handleCloseTooltip = () => {
+    props.onClose();
+  }
+
   return(
     <div className={`popup popup_type_edit-profile ${props.isOpened ? "popup_opened" : ""}`}>
       <div className="popup__auth-container">
@@ -21,7 +25,7 @@ function InfoTooltip (props) {
           ? "Вы успешно зарегистрировались"
           : "Что-то пошло не так! Попробуйте еще раз."}
       </p>
-      <button onClick={props.onClose} className="popup__close-btn" type="button"></button>
+      <button onClick={handleCloseTooltip} className="popup__close-btn" type="button"></button>
       </div>
     </div>
   )
