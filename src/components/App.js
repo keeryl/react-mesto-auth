@@ -18,6 +18,7 @@ import auth from '../utils/Auth';
 
 function App() {
 
+  const [email, setEmail] = React.useState('');
   const [currentUser, setCurrentUser] = React.useState({});
   const [isEditProfilePopupOpen, setIsEditProfilePopup] = React.useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopup] = React.useState(false);
@@ -51,7 +52,7 @@ function App() {
 
   React.useEffect(() => {
     tokenCheck();
-  });
+  }, []);
 
   const tokenCheck = () => {
     const token = localStorage.getItem('token');
@@ -59,12 +60,13 @@ function App() {
       auth.getContent(token)
         .then(res => {
           if (res) {
+            setEmail(res.data.email)
             setLoggedIn(true);
             history.push('/');
           }
         })
         .catch(err => {
-
+          console.log(err);
         });
     }
   }
@@ -175,18 +177,24 @@ function App() {
     setSelectedCard(card);
   }
 
-  function handleLogin () {
+  function handleLogin (userEmail) {
+    setEmail(userEmail);
     setLoggedIn(true);
   }
 
   function handleLogout () {
     setLoggedIn(false);
+    setEmail('');
+  }
+
+  function handleRegistration (userEmail) {
+    setEmail(userEmail);
   }
 
   return (
     <div className="page">
       <CurrentUserContext.Provider value={currentUser}>
-        <Header loggedIn={loggedIn} onLogout={handleLogout}/>
+        <Header loggedIn={loggedIn} onLogout={handleLogout} email={email}/>
         <Switch>
           <ProtectedRoute
             exact path="/"
@@ -202,7 +210,7 @@ function App() {
           />
           <Route exact path="/sign-up">
             <Register
-              onLogin={handleLogin}
+              onRegistration={handleRegistration}
             />
           </Route>
           <Route exact path="/sign-in">

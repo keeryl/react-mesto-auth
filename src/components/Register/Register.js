@@ -20,10 +20,8 @@ function Register (props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(`Register Submit clicked, email: ${email}, password: ${password}`);
     auth.register(password, email)
       .then(res => {
-        console.log(res);
         if(res) {
           setRegistrationState(true);
           localStorage.setItem('user', JSON.stringify({
@@ -33,11 +31,13 @@ function Register (props) {
           setTooltipPopupState(true);
           setPassword('');
           setEmail('');
+          props.onRegistration(res.data.email);
         }
       })
       .catch(err => {
         setTooltipPopupState(true);
         setRegistrationState(false);
+        console.log(err);
       })
   }
 
